@@ -622,6 +622,48 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+@keyframes shortestpath{
+  0%{
+    transform: scale(.6);
+    background-color: rgb(255, 254, 106);
+  }
+
+  50%{
+    transform: scale(1.2);
+    background-color: rgb(255, 254, 106);
+  }
+
+  100%{
+    transform: scale(1.0);
+    background-color: rgb(255, 254, 106);
+  }
+}
+
+.animate-shortestpath{
+  animation: shortestpath 1.5s ease-out;
+}
+
+@keyframes shortestpath{
+  0%{
+    transform: scale(.6);
+    background-color: rgb(255, 254, 106);
+  }
+
+  50%{
+    transform: scale(1.2);
+    background-color: rgb(255, 254, 106);
+  }
+
+  100%{
+    transform: scale(1.0);
+    background-color: rgb(255, 254, 106);
+  }
+}
+
+.animate-visited{
+  animation: shortestpath 1.5s ease-out;
+}
+
 @keyframes wall{
   0%{
     transform: scale(.3);
@@ -706,6 +748,11 @@ video {
   border-color: rgb(71 85 105 / var(--tw-border-opacity));
 }
 
+.bg-blue-400{
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity));
+}
+
 .bg-end{
   --tw-bg-opacity: 1;
   background-color: rgb(175 27 11 / var(--tw-bg-opacity));
@@ -760,9 +807,9 @@ video {
   background-color: transparent;
 }
 
-.bg-yellow-500{
+.bg-yellow-300{
   --tw-bg-opacity: 1;
-  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
+  background-color: rgb(253 224 71 / var(--tw-bg-opacity));
 }
 
 .p-1{

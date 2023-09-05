@@ -49,8 +49,11 @@ pub fn cell_component(props: &Props) -> Html {
             else if props.cell_type == CellType::End {
                 <div class="w-full h-full bg-end"></div>
             }
-            else if props.cell_type == CellType::Path {
-                <div class="w-full h-full bg-yellow-500"></div>
+            else if props.cell_type == CellType::ShortestPath {
+                <div class="w-full h-full animate-shortestpath bg-yellow-300"></div>
+            }
+            else if props.cell_type == CellType::Visited {
+                <div class="w-full h-full animate-visited bg-blue-400"></div>
             }
             else {
                 <div class="w-full h-full hover:bg-slate-700 duration-300"></div>

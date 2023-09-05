@@ -16,7 +16,8 @@ pub enum CellType {
     Wall,
     Start,
     End,
-    Path,
+    ShortestPath,
+    Visited,
 }
 
 #[derive(Clone, PartialEq, Store)]
@@ -87,10 +88,17 @@ impl Board {
         self.cells[index] = CellType::Empty;
     }
 
-    pub fn place_path_by_pos(&mut self, pos: Pos) {
+    pub fn place_shortest_path_by_pos(&mut self, pos: Pos) {
+        let index = ((self.cells_per_row * pos.1 as u32) + pos.0 as u32) as usize; 
+        if self.cells[index] == CellType::Empty || self.cells[index] == CellType::Visited {
+            self.cells[index] = CellType::ShortestPath;
+        }
+    }
+
+    pub fn place_visited_by_pos(&mut self, pos: Pos) {
         let index = ((self.cells_per_row * pos.1 as u32) + pos.0 as u32) as usize; 
         if self.cells[index] == CellType::Empty {
-            self.cells[index] = CellType::Path;
+            self.cells[index] = CellType::Visited;
         }
     }
 

@@ -20,21 +20,22 @@ pub fn PathfindingNav(props: &Props) -> Html {
     let (pathfinder_store, pathfinder_dispatch) = use_store::<Pathfinder>();
 
     let on_visclick = {
-        let cloned_pf_dispatch = pathfinder_dispatch.clone();
+        let cloned_pathfinder_dispatch = pathfinder_dispatch.clone();
         let cloned_board_dispatch = props.board_dispatch.clone();
         Callback::from(move |_e: MouseEvent|{
             //cloned_pf_dispatch.reduce_mut(|state| { state.is_pathfinding = true; });
             let bs = cloned_board_dispatch.get();
-            let result:Option<(Vec<Pos>, u32)> = dijkstra(
-                &bs.start_pos,
-                |p| bs.get_successors(*p).into_iter().map(|p| (p,1_u32)).collect::<Vec<(Pos, u32)>>(),
-                |p| bs.is_goal(*p)
-            );
+            let ps = cloned_pathfinder_dispatch.get();
+            let result = ps.find_shortest_path(bs);
 
-            if let Some((pvec, _)) = result {
+            if let Some((sp_vec, search_vec)) = result {
                 cloned_board_dispatch.reduce_mut(move |state| {
-                    for p in pvec {
-                        state.place_path_by_pos(p);
+                    for p in search_vec {
+                        //state.place_visited_by_pos(p);
+                    }
+
+                    for p in sp_vec {
+                        state.place_shortest_path_by_pos(p);
                     }
                 })
             }
