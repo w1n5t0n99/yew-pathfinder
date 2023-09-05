@@ -643,25 +643,30 @@ video {
   animation: shortestpath 1.5s ease-out;
 }
 
-@keyframes shortestpath{
+@keyframes visited{
   0%{
-    transform: scale(.6);
-    background-color: rgb(255, 254, 106);
+    transform: scale(.3);
+    border-radius: 100%;
+    background-color: rgba(0, 0, 66, 0.75);
   }
 
   50%{
+    background-color: rgba(17, 104, 217, 0.75);
+  }
+
+  75%{
     transform: scale(1.2);
-    background-color: rgb(255, 254, 106);
+    background-color: rgba(0, 217, 159, 0.75);
   }
 
   100%{
     transform: scale(1.0);
-    background-color: rgb(255, 254, 106);
+    background-color: rgba(0, 190, 218, 0.75);
   }
 }
 
 .animate-visited{
-  animation: shortestpath 1.5s ease-out;
+  animation: visited 1.5s ease-in;
 }
 
 @keyframes wall{

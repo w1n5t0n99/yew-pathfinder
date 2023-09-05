@@ -31,7 +31,7 @@ pub fn PathfindingNav(props: &Props) -> Html {
             if let Some((sp_vec, search_vec)) = result {
                 cloned_board_dispatch.reduce_mut(move |state| {
                     for p in search_vec {
-                        //state.place_visited_by_pos(p);
+                        state.place_visited_by_pos(p);
                     }
 
                     for p in sp_vec {

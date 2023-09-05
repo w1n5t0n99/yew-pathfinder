@@ -41,7 +41,7 @@ module.exports = {
       animation: {
         'wall': 'wall .3s ease-out',
         'shortestpath': 'shortestpath 1.5s ease-out',
-        'visited': 'shortestpath 1.5s ease-out',
+        'visited': 'visited 1.5s ease-in',
       },
     },
   },
