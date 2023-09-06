@@ -27,14 +27,14 @@ pub fn PathfindingNav(props: &Props) -> Html {
             let ps = cloned_pathfinder_dispatch.get();
             let result = ps.find_shortest_path(bs);
 
-            if let Some((sp_vec, search_vec)) = result {
+            if let Some((shortest_path_vec, visited_vec)) = result {
                 cloned_board_dispatch.reduce_mut(move |state| {
-                    for (i, p) in search_vec.into_iter().enumerate() {
-                        state.place_visited_by_pos(p, (i*5) as u16);
+                    for (i, p) in visited_vec.into_iter().enumerate() {
+                        state.set_visited_by_pos(p, (i*5) as u16);
                     }
 
-                    for p in sp_vec {
-                        state.override_shortest_path_by_pos(p);
+                    for p in shortest_path_vec {
+                        state.set_shortest_path_by_pos(p);
                     }
                 })
             }

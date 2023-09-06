@@ -88,25 +88,17 @@ impl Board {
         }
     }
 
-    pub fn place_wall_by_index(&mut self, index: usize) {
-        self.cells[index] = CellType::Wall;
-    }
-
     pub fn clear_cell_by_index(&mut self, index: usize) {
         self.cells[index] = CellType::Empty;
     }
 
-    pub fn place_shortest_path_by_pos(&mut self, pos: Pos, delay: u16) {
-        let index = ((self.cells_per_row * pos.1 as u32) + pos.0 as u32) as usize; 
-        match self.cells[index] {
-            CellType::Empty | CellType::Visited(_) => {
-                self.cells[index] = CellType::ShortestPath(delay);
-            }
-            _ => { }
+    pub fn set_wall_by_index(&mut self, index: usize) {
+        if self.cells[index] == CellType::Empty {
+            self.cells[index] = CellType::Wall;
         }
     }
 
-    pub fn override_shortest_path_by_pos(&mut self, pos: Pos) {
+    pub fn set_shortest_path_by_pos(&mut self, pos: Pos) {
         let index = ((self.cells_per_row * pos.1 as u32) + pos.0 as u32) as usize; 
         match self.cells[index] {
             CellType::Visited(delay) => {
@@ -116,7 +108,7 @@ impl Board {
         }
     }
 
-    pub fn place_visited_by_pos(&mut self, pos: Pos, delay: u16) {
+    pub fn set_visited_by_pos(&mut self, pos: Pos, delay: u16) {
         let index = ((self.cells_per_row * pos.1 as u32) + pos.0 as u32) as usize; 
         if self.cells[index] == CellType::Empty {
             self.cells[index] = CellType::Visited(delay);

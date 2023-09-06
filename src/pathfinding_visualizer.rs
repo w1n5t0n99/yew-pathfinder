@@ -44,7 +44,7 @@ pub fn PathfindingVisualizer() -> Html {
             let store = dispatch.get();
             if store.allow_drawing == true {
                 if c.0 == CellType::Empty {
-                     dispatch.reduce_mut(|state| {state.place_wall_by_index(c.1); });
+                     dispatch.reduce_mut(|state| {state.set_wall_by_index(c.1); });
                 }
                 else if c.0 == CellType::Wall  {
                     dispatch.reduce_mut(|state| {state.clear_cell_by_index(c.1); });
@@ -56,7 +56,7 @@ pub fn PathfindingVisualizer() -> Html {
 
     let on_cell_mousedown = use_callback(move |c: (CellType, usize), dispatch,| {
             if c.0 == CellType::Empty {
-                dispatch.reduce_mut(|state| {state.place_wall_by_index(c.1); state.allow_drawing = true; });
+                dispatch.reduce_mut(|state| {state.set_wall_by_index(c.1); state.allow_drawing = true; });
             }
             else if c.0 == CellType::Wall {
                 dispatch.reduce_mut(|state| {state.clear_cell_by_index(c.1); state.allow_drawing = true; });
