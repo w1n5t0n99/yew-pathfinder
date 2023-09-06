@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap');
 
 /*
-! tailwindcss v3.3.1 | MIT License | https://tailwindcss.com
+! tailwindcss v3.2.7 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -35,7 +35,6 @@
 3. Use a more readable tab size.
 4. Use the user's configured `sans` font-family by default.
 5. Use the user's configured `sans` font-feature-settings by default.
-6. Use the user's configured `sans` font-variation-settings by default.
 */
 
 html {
@@ -52,8 +51,6 @@ html {
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
-  font-variation-settings: normal;
-  /* 6 */
 }
 
 /*
@@ -627,11 +624,31 @@ video {
 
 @keyframes shortestpath{
   0%{
+    transform: scale(.3);
+    border-radius: 100%;
+    background-color: rgba(0, 0, 66, 0.75);
+  }
+
+  25%{
+    background-color: rgba(17, 104, 217, 0.75);
+  }
+
+  37%{
+    transform: scale(1.2);
+    background-color: rgba(0, 217, 159, 0.75);
+  }
+
+  50%{
+    transform: scale(1.0);
+    background-color: rgba(0, 190, 218, 0.75);
+  }
+
+  51%{
     transform: scale(.6);
     background-color: rgb(255, 254, 106);
   }
 
-  50%{
+  75%{
     transform: scale(1.2);
     background-color: rgb(255, 254, 106);
   }
@@ -643,7 +660,7 @@ video {
 }
 
 .animate-shortestpath{
-  animation: shortestpath 1.5s ease-out;
+  animation: shortestpath 3s ease-out;
 }
 
 @keyframes visited{
@@ -818,6 +835,11 @@ video {
 
 .bg-transparent{
   background-color: transparent;
+}
+
+.bg-yellow-200{
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 240 138 / var(--tw-bg-opacity));
 }
 
 .bg-yellow-300{

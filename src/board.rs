@@ -16,7 +16,7 @@ pub enum CellType {
     Wall,
     Start,
     End,
-    ShortestPath,
+    ShortestPath(u16),
     Visited(u16),
 }
 
@@ -80,6 +80,14 @@ impl Board {
         self.cells[((cells_per_row * y) + ex) as usize] = CellType::End;
     }
 
+    pub fn clear(&mut self) {
+        for c in self.cells.iter_mut() {
+            if *c != CellType::Start && *c != CellType::End {
+                *c = CellType::Empty;
+            }
+        }
+    }
+
     pub fn place_wall_by_index(&mut self, index: usize) {
         self.cells[index] = CellType::Wall;
     }
@@ -88,11 +96,21 @@ impl Board {
         self.cells[index] = CellType::Empty;
     }
 
-    pub fn place_shortest_path_by_pos(&mut self, pos: Pos) {
+    pub fn place_shortest_path_by_pos(&mut self, pos: Pos, delay: u16) {
         let index = ((self.cells_per_row * pos.1 as u32) + pos.0 as u32) as usize; 
         match self.cells[index] {
             CellType::Empty | CellType::Visited(_) => {
-                self.cells[index] = CellType::ShortestPath;
+                self.cells[index] = CellType::ShortestPath(delay);
+            }
+            _ => { }
+        }
+    }
+
+    pub fn override_shortest_path_by_pos(&mut self, pos: Pos) {
+        let index = ((self.cells_per_row * pos.1 as u32) + pos.0 as u32) as usize; 
+        match self.cells[index] {
+            CellType::Visited(delay) => {
+                self.cells[index] = CellType::ShortestPath(delay);
             }
             _ => { }
         }
