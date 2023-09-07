@@ -1,10 +1,12 @@
+use std::vec;
+
 use gloo::console::info;
 use yew::prelude::*;
 use yew_hooks::{use_window_size, use_renders_count, use_event_with_window, use_size};
 use yewdux::prelude::*;
 use pathfinding::prelude::dijkstra;
 
-use crate::{nav_state::NavState, board::{Board, Pos}};
+use crate::{nav_state::NavState, board::{Board, Pos}, dropdown::Dropdown};
 
 
 #[derive(Properties, PartialEq)]
@@ -42,6 +44,8 @@ pub fn PathfindingNav(props: &Props) -> Html {
         })
     };
 
+    let algo_items = vec![AttrValue::from("Astar"), AttrValue::from("Dijkstra"), AttrValue::from("BreadthFirst"), AttrValue::from("DepthFirst")];
+
     html! {
         <>
             //<p class="z-2 absolute bg-nav rounded-lg text-white text-2xl font-body p-1 ml-1 mt-28">{count}{"] Nav"}</p> 
@@ -51,11 +55,12 @@ pub fn PathfindingNav(props: &Props) -> Html {
                     <div class="divide-x inline-block p-2">
                         <div class="inline-block">
                             <button onclick={on_visclick} class="text-base text-white bg-green-500 hover:bg-green-400 font-body rounded-md p-1 mx-2">{"Visualize!"}</button>
-                            <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Algorithms: Dijkstra's Algorithm"}</button>
-                            <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Speed: Fast"}</button>
+                           // <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Algorithms: Dijkstra's Algorithm \u{23F7}"}</button>
+                            <Dropdown items={algo_items} />
+                            <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Speed: Fast \u{23F7}"}</button>
                         </div>
                         <div class="inline-block">
-                            <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Mazes: None"}</button>
+                            <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Mazes: None \u{23F7}"}</button>
                             <button onclick={on_cbclick} class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Clear Board"}</button>
                             <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Clear Path"}</button>
                         </div> 
