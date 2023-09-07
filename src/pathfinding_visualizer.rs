@@ -3,7 +3,7 @@ use yew::prelude::*;
 use yew_hooks::{use_window_size, use_renders_count, use_event_with_window, use_size};
 use yewdux::prelude::*;
 
-use crate::{board::{Board, CellType}, cell::Cell, pathfinder::Pathfinder, pathfinding_nav::PathfindingNav};
+use crate::{board::{Board, CellType}, cell::Cell, nav_state::NavState, pathfinding_nav::PathfindingNav};
 
 
 #[function_component]
@@ -11,21 +11,21 @@ pub fn PathfindingVisualizer() -> Html {
     let count = use_renders_count();
     //let window = use_window_size();
     let (board_store, board_dispatch) = use_store::<Board>();
-    let (_, pathfinder_dispatch) = use_store::<Pathfinder>();
+    let (_, nav_dispatch) = use_store::<NavState>();
 
     let board_node =  use_node_ref();
     let board_dimensions = use_size(board_node.clone());
 
     {
         let cloned_board_dispatch = board_dispatch.clone();
-        let cloned_pathfinder_dispatch = pathfinder_dispatch.clone();
+        let cloned_nav_dispatch = nav_dispatch.clone();
         use_effect_with_deps(
             move |w| {
                 cloned_board_dispatch.reduce_mut(|state| {
                     state.reset(w.0 as u32, w.1 as u32);
                 });
 
-                cloned_pathfinder_dispatch.reduce_mut(|state| {
+                cloned_nav_dispatch.reduce_mut(|state| {
                     state.reset();
                 });
             },

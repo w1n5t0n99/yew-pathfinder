@@ -22,7 +22,7 @@ pub struct Props {
 
 #[function_component(Cell)]
 pub fn cell_component(props: &Props) -> Html {
-    //let count = use_renders_count();
+    let count = use_renders_count();
     let anim_cell_classes = use_state_eq(||EMPTY_CLASSES.to_string());
 
     let (cell_classes, delay) = match props.cell_type {

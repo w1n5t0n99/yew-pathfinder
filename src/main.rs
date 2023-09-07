@@ -1,5 +1,6 @@
 mod board;
-mod pathfinder;
+mod nav_state;
+mod dropdown;
 mod cell;
 mod test;
 mod pathfinding_visualizer;

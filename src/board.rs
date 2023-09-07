@@ -1,4 +1,7 @@
+use pathfinding::prelude::{dijkstra, astar, bfs, dfs};
 use yewdux::store::Store;
+
+use crate::cell::Cell;
 
 
 const CELL_LENGTH: u32 = 28;
@@ -6,6 +9,14 @@ const MAX_CELLS_PER_ROW: u32 = 50;
 const MAX_CELLS_PER_COLUMN: u32 = 50;
 const MIN_CELLS_PER_ROW: u32 = 10;
 const MIN_CELLS_PER_COLUMN: u32 = 10;
+
+#[derive(Debug, PartialEq, Clone)]
+pub enum Algorithm {
+    Astar,
+    Dijkstra,
+    BreadthFirst,
+    DepthFirst,
+}
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Pos(pub u16, pub u16);
@@ -98,20 +109,21 @@ impl Board {
         }
     }
 
-    pub fn set_shortest_path_by_pos(&mut self, pos: Pos) {
-        let index = ((self.cells_per_row * pos.1 as u32) + pos.0 as u32) as usize; 
-        match self.cells[index] {
-            CellType::Visited(delay) => {
+    pub fn set_cell_by_pathfinding(&mut self, visited: &[Pos], shortest_path: &[Pos], delay: u16 ) {
+        // set visited cells
+        for (i,c) in visited.iter().enumerate() {
+            let index = ((self.cells_per_row * c.1 as u32) + c.0 as u32) as usize; 
+            if self.cells[index] == CellType::Empty {
+                self.cells[index] = CellType::Visited((i as u16)*delay);
+            }
+        }
+
+        // set shortest path cells
+        for c in shortest_path.iter() {
+            let index = ((self.cells_per_row * c.1 as u32) + c.0 as u32) as usize; 
+            if let CellType::Visited(delay) = self.cells[index] {
                 self.cells[index] = CellType::ShortestPath(delay);
             }
-            _ => { }
-        }
-    }
-
-    pub fn set_visited_by_pos(&mut self, pos: Pos, delay: u16) {
-        let index = ((self.cells_per_row * pos.1 as u32) + pos.0 as u32) as usize; 
-        if self.cells[index] == CellType::Empty {
-            self.cells[index] = CellType::Visited(delay);
         }
     }
 
@@ -173,6 +185,67 @@ impl Board {
 
         false
     }
+
+    fn find_shortest_path_dijkstra(&self) -> Option<(Vec<Pos>, Vec<Pos>)> {
+        let mut searched_cells = Vec::new();
+
+        let shortest_path: Option<_> = dijkstra(
+            &self.start_pos,
+            |p| { searched_cells.push(p.clone()); self.get_successors(*p).into_iter().map(|p| (p,1_u32)).collect::<Vec<(Pos, u32)>>() },
+            |p| self.is_goal(*p)
+        );
+
+        shortest_path.map(|sp| (sp.0, searched_cells))
+    }
+
+    fn find_shortest_path_astar(&self) -> Option<(Vec<Pos>, Vec<Pos>)> {
+        let mut searched_cells = Vec::new();
+
+        let shortest_path: Option<_> = astar(
+            &self.start_pos,
+            |p| { searched_cells.push(p.clone()); self.get_successors(*p).into_iter().map(|p| (p,1_u32)).collect::<Vec<(Pos, u32)>>() },
+            |p| (p.0.abs_diff(self.end_pos.0) + p.1.abs_diff(self.end_pos.1)) as u32,
+            |p| self.is_goal(*p)
+        );
+
+        shortest_path.map(|sp| (sp.0, searched_cells))
+    }
+
+    fn find_shortest_path_bfs(&self) -> Option<(Vec<Pos>, Vec<Pos>)> {
+        let mut searched_cells = Vec::new();
+
+        let shortest_path: Option<_> = bfs(
+            &self.start_pos,
+            |p| {searched_cells.push(p.clone()); self.get_successors(*p) },
+            |p| self.is_goal(*p)
+        );
+
+        shortest_path.map(|sp| (sp, searched_cells))
+    }
+
+    fn find_shortest_path_dfs(&self) -> Option<(Vec<Pos>, Vec<Pos>)> {
+        let mut searched_cells = Vec::new();
+
+        let shortest_path: Option<_> = dfs(
+            self.start_pos,
+            |p| {searched_cells.push(p.clone()); self.get_successors(*p) },
+            |p| self.is_goal(*p)
+        );
+
+        shortest_path.map(|sp| (sp, searched_cells))
+    }
+
+    pub fn find_shortest_path(&self, algorigthm: Algorithm) -> Option<(Vec<Pos>, Vec<Pos>)> {
+        let res = match algorigthm {
+            Algorithm::Dijkstra => self.find_shortest_path_dijkstra(),
+            Algorithm::Astar => self.find_shortest_path_astar(),
+            Algorithm::BreadthFirst => self.find_shortest_path_bfs(),
+            Algorithm::DepthFirst => self.find_shortest_path_dfs(),
+        };
+
+        res
+    }
+
 }
 
 impl Default for Board {
