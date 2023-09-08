@@ -1,3 +1,4 @@
+use gloo::console::info;
 use pathfinding::prelude::{dijkstra, astar, bfs, dfs};
 use yewdux::store::Store;
 
@@ -225,7 +226,7 @@ impl Board {
 
     fn find_shortest_path_dfs(&self) -> Option<(Vec<Pos>, Vec<Pos>)> {
         let mut searched_cells = Vec::new();
-
+        info!("shortest path search");
         let shortest_path: Option<_> = dfs(
             self.start_pos,
             |p| {searched_cells.push(p.clone()); self.get_successors(*p) },

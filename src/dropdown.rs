@@ -15,7 +15,7 @@ pub struct Props {
 
 #[function_component]
 pub fn Dropdown(props: &Props) -> Html {
-    //let count = use_renders_count();
+    let count = use_renders_count();
     let default_item = props.items.first().map(|s| s.clone()).unwrap_or(AttrValue::Static(""));
 
     let show_dropdown = use_state(|| false);
@@ -64,7 +64,7 @@ pub fn Dropdown(props: &Props) -> Html {
         <>
         <div class="inline-block relative w-max">
             <button {onclick} {onblur} class="block font-body text-left text-white bg-nav hover:text-green-500 appearance-none py-1 px-4" >
-            {(*selected_item).as_str()}{" \u{23F7}"}
+            {count}{" "}{(*selected_item).as_str()}{" \u{23F7}"}
             </button>
             if *show_dropdown {
 

@@ -69,7 +69,7 @@ pub fn PathfindingVisualizer() -> Html {
 
     html! {
         <div class="h-screen flex flex-col gap-2">
-            //<p class="z-2 absolute bg-nav rounded-lg text-white text-2xl font-body p-1 ml-1 mt-16">{count}{"] Board: "}{board_store.cells.len()}</p> 
+            <p class="z-2 absolute bg-nav rounded-lg text-white text-2xl font-body p-1 ml-1 mt-16">{count}{"] Board: "}{board_store.cells.len()}</p> 
             //<p class="z-1 absolute bg-nav rounded-lg text-white text-2xl font-body p-1 ml-1 mt-28">{"Window: "}{window.0}{"-"}{window.1}</p> 
             //<p class="z-1 absolute bg-nav rounded-lg text-white text-2xl font-body p-1 ml-1 mt-52">{"Allow Drawing: "}{board_store.allow_drawing}</p> 
             <PathfindingNav board_dispatch={board_dispatch.clone()} />            
