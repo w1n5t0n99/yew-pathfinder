@@ -52,7 +52,7 @@ pub fn cell_component(props: &Props) -> Html {
 
         Callback::from(move |e: MouseEvent|{
             hclick.emit((cell_type.clone(), index));
-            e.prevent_default()
+           // e.prevent_default()
         })
     };
 

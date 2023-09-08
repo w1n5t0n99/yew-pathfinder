@@ -25,7 +25,7 @@ pub fn Dropdown(props: &Props) -> Html {
         })
     };
 
-    let onfocusout = {
+    let onblur = {
         let cloned_show_dropdown = show_dropdown.clone();
 
         Callback::from(move |_: FocusEvent| {
@@ -35,18 +35,22 @@ pub fn Dropdown(props: &Props) -> Html {
 
     html!{
         <>
-            <button {onclick} class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{(*selected_item).as_str()}</button>
+        <div class="inline-block relative">
+            <button {onclick} {onblur} class="block font-body text-left text-white bg-nav hover:bg-green-950 appearance-none py-1 px-4" >
+            {(*selected_item).as_str()}{" \u{23F7}"}
+            </button>
             if *show_dropdown {
-                <div {onfocusout} class="bg-nav absolute mt-2 py-2 px-2 -skew-x-2 shadow-xl z-10">
-                    <div class="flex flex-col items-center gap-1 overflow-auto">
+
+                <ul class="absolute py-4 px-2 shadow-2xl z-10 bg-nav">
                     {
                         props.items.clone().iter().map(|item| {
-                            html!{<div class="w-full cursor-pointer text-white hover:text-green-500 bg-transparent font-body">{ item.clone() }</div>}
+                            html!{<li class="cursor-pointer font-body text-white p-2 hover:bg-green-950 whitespace-no-wrap block">{ item.clone() }</li>}
                         }).collect::<Html>()
-                    }
-                    </div>
-                </div>
+                    }              
+            
+                </ul>
             }
+        </div>
         </>
     }
 }
