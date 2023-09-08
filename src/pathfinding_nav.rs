@@ -45,6 +45,8 @@ pub fn PathfindingNav(props: &Props) -> Html {
     };
 
     let algo_items = vec![AttrValue::from("Astar"), AttrValue::from("Dijkstra"), AttrValue::from("BreadthFirst"), AttrValue::from("DepthFirst")];
+    let speed_items = vec![AttrValue::from("Fast"), AttrValue::from("Average"), AttrValue::from("Slow")];
+
 
     html! {
         <>
@@ -57,7 +59,8 @@ pub fn PathfindingNav(props: &Props) -> Html {
                             <button onclick={on_visclick} class="text-base text-white bg-green-500 hover:bg-green-400 font-body rounded-md p-1 mx-2">{"Visualize!"}</button>
                            // <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Algorithms: Dijkstra's Algorithm \u{23F7}"}</button>
                             <Dropdown items={algo_items} />
-                            <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Speed: Fast \u{23F7}"}</button>
+                            <Dropdown items={speed_items} />
+                            //<button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Speed: Fast \u{23F7}"}</button>
                         </div>
                         <div class="inline-block">
                             <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Mazes: None \u{23F7}"}</button>

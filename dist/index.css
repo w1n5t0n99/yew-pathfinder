@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap');
 
 /*
-! tailwindcss v3.3.1 | MIT License | https://tailwindcss.com
+! tailwindcss v3.2.7 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -35,7 +35,6 @@
 3. Use a more readable tab size.
 4. Use the user's configured `sans` font-family by default.
 5. Use the user's configured `sans` font-feature-settings by default.
-6. Use the user's configured `sans` font-variation-settings by default.
 */
 
 html {
@@ -52,8 +51,6 @@ html {
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
-  font-variation-settings: normal;
-  /* 6 */
 }
 
 /*
@@ -528,6 +525,10 @@ video {
   position: relative;
 }
 
+.top-12{
+  top: 3rem;
+}
+
 .z-10{
   z-index: 10;
 }
@@ -616,8 +617,17 @@ video {
   width: 1.75rem;
 }
 
+.w-auto{
+  width: auto;
+}
+
 .w-full{
   width: 100%;
+}
+
+.w-max{
+  width: -moz-max-content;
+  width: max-content;
 }
 
 .flex-initial{
@@ -880,9 +890,9 @@ video {
   padding-bottom: 0.25rem;
 }
 
-.py-4{
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+.py-2{
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .pt-1{
@@ -949,11 +959,6 @@ body {
 .hover\:bg-green-400:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(74 222 128 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-green-950:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(5 46 22 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-slate-500:hover{
