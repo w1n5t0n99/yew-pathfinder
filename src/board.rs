@@ -1,6 +1,6 @@
-use gloo::console::info;
-use pathfinding::prelude::{dijkstra, astar, bfs, dfs};
+use pathfinding::{prelude::{dijkstra, astar, bfs, dfs, fringe, iddfs}};
 use yewdux::store::Store;
+use std::collections::HashSet;
 
 use crate::cell::Cell;
 
@@ -16,7 +16,7 @@ pub enum Algorithm {
     Astar,
     Dijkstra,
     BreadthFirst,
-    DepthFirst,
+    Fringe,
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -92,10 +92,21 @@ impl Board {
         self.cells[((cells_per_row * y) + ex) as usize] = CellType::End;
     }
 
-    pub fn clear(&mut self) {
+    pub fn clear_board(&mut self) {
         for c in self.cells.iter_mut() {
             if *c != CellType::Start && *c != CellType::End {
                 *c = CellType::Empty;
+            }
+        }
+    }
+
+    pub fn clear_path(&mut self) {
+        for c in self.cells.iter_mut() {
+            match *c {
+                CellType::Visited(_) | CellType::ShortestPath(_) => {
+                    *c = CellType::Empty;
+                }
+                _=> { }
             }
         }
     }
@@ -212,6 +223,19 @@ impl Board {
         shortest_path.map(|sp| (sp.0, searched_cells))
     }
 
+    fn find_shortest_path_fringe(&self) -> Option<(Vec<Pos>, Vec<Pos>)> {
+        let mut searched_cells = Vec::new();
+
+        let shortest_path: Option<_> = fringe(
+            &self.start_pos,
+            |p| { searched_cells.push(p.clone()); self.get_successors(*p).into_iter().map(|p| (p,1_u32)).collect::<Vec<(Pos, u32)>>() },
+            |p| (p.0.abs_diff(self.end_pos.0) + p.1.abs_diff(self.end_pos.1)) as u32,
+            |p| self.is_goal(*p)
+        );
+
+        shortest_path.map(|sp| (sp.0, searched_cells))
+    }
+
     fn find_shortest_path_bfs(&self) -> Option<(Vec<Pos>, Vec<Pos>)> {
         let mut searched_cells = Vec::new();
 
@@ -225,23 +249,22 @@ impl Board {
     }
 
     fn find_shortest_path_dfs(&self) -> Option<(Vec<Pos>, Vec<Pos>)> {
-        let mut searched_cells = Vec::new();
-        info!("shortest path search");
+        let mut searched_cells = HashSet::new();
+
         let shortest_path: Option<_> = dfs(
             self.start_pos,
-            |p| {searched_cells.push(p.clone()); self.get_successors(*p) },
+            |p| {searched_cells.insert(p.clone()); self.get_successors(*p) },
             |p| self.is_goal(*p)
         );
-
-        shortest_path.map(|sp| (sp, searched_cells))
+        shortest_path.map(|sp| (sp, searched_cells.into_iter().collect()))
     }
 
     pub fn find_shortest_path(&self, algorigthm: Algorithm) -> Option<(Vec<Pos>, Vec<Pos>)> {
         let res = match algorigthm {
-            Algorithm::Dijkstra => self.find_shortest_path_dijkstra(),
             Algorithm::Astar => self.find_shortest_path_astar(),
+            Algorithm::Dijkstra => self.find_shortest_path_dijkstra(),
             Algorithm::BreadthFirst => self.find_shortest_path_bfs(),
-            Algorithm::DepthFirst => self.find_shortest_path_dfs(),
+            Algorithm::Fringe => self.find_shortest_path_fringe(),
         };
 
         res

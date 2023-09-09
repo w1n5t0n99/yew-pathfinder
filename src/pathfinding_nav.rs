@@ -27,11 +27,17 @@ pub fn PathfindingNav(props: &Props) -> Html {
         Callback::from(move |_e: MouseEvent|{
             let board = cloned_board_dispatch.get();
             let nav_state = cloned_nav_dispatch.get();
+            let speed_delay = match nav_state.speed {
+                Speed::Fast => 6,
+                Speed::Average => 24,
+                Speed::Slow => 48,
+            };
+
             let result = board.find_shortest_path(nav_state.algorithm.clone());
 
             if let Some((shortest_path, visited)) = result {
                 cloned_board_dispatch.reduce_mut(move |state| {
-                    state.set_cell_by_pathfinding(&visited, &shortest_path, 6);
+                    state.set_cell_by_pathfinding(&visited, &shortest_path, speed_delay);
                 })
             }
         })
@@ -40,11 +46,18 @@ pub fn PathfindingNav(props: &Props) -> Html {
     let on_clear_board_click = {
         let cloned_board_dispatch = props.board_dispatch.clone();
         Callback::from(move |_e: MouseEvent|{
-            cloned_board_dispatch.reduce_mut(|state| state.clear())
+            cloned_board_dispatch.reduce_mut(|state| state.clear_board())
         })
     };
 
-    let algo_items = vec![AttrValue::from("Astar"), AttrValue::from("Dijkstra"), AttrValue::from("BreadthFirst"), AttrValue::from("DepthFirst")];
+    let on_clear_path_click = {
+        let cloned_board_dispatch = props.board_dispatch.clone();
+        Callback::from(move |_e: MouseEvent|{
+            cloned_board_dispatch.reduce_mut(|state| state.clear_path())
+        })
+    };
+
+    let algo_items = vec![AttrValue::from("Astar"), AttrValue::from("Dijkstra"), AttrValue::from("BreadthFirst"), AttrValue::from("Fringe")];
     let speed_items = vec![AttrValue::from("Fast"), AttrValue::from("Average"), AttrValue::from("Slow")];
 
     let on_algo_selected = {
@@ -55,7 +68,7 @@ pub fn PathfindingNav(props: &Props) -> Html {
                     "Astar" => state.algorithm = Algorithm::Astar,
                     "Dijkstra" => state.algorithm = Algorithm::Dijkstra,
                     "BreadthFirst" => state.algorithm = Algorithm::BreadthFirst,
-                    "DepthFirst" => state.algorithm = Algorithm::DepthFirst,
+                    "Fringe" => state.algorithm = Algorithm::Fringe,
                     _ => panic!("nonvalid algorithm")
                 }
             })
@@ -85,15 +98,13 @@ pub fn PathfindingNav(props: &Props) -> Html {
                     <div class="divide-x inline-block p-2">
                         <div class="inline-block">
                             <button onclick={on_visualize_click} class="text-base text-white bg-green-500 hover:bg-green-400 font-body rounded-md p-1 mx-2">{"Visualize!"}</button>
-                           // <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Algorithms: Dijkstra's Algorithm \u{23F7}"}</button>
                             <Dropdown on_selected={on_algo_selected} items={algo_items} />
                             <Dropdown on_selected={on_speed_selected} items={speed_items} />
-                            //<button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Speed: Fast \u{23F7}"}</button>
                         </div>
                         <div class="inline-block">
                             <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Mazes: None \u{23F7}"}</button>
                             <button onclick={on_clear_board_click} class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Clear Board"}</button>
-                            <button class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Clear Path"}</button>
+                            <button onclick={on_clear_path_click} class="text-base text-white hover:text-green-500 bg-transparent font-body mx-2">{"Clear Path"}</button>
                         </div> 
                     </div>
                 </div>

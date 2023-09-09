@@ -20,13 +20,13 @@ pub struct NavState {
 impl NavState {
     pub fn new() -> Self {
         NavState { 
-            algorithm: Algorithm::Dijkstra,
+            algorithm: Algorithm::Astar,
             speed: Speed::Fast,
         }
     }
 
     pub fn reset(&mut self) {
-        self.algorithm = Algorithm::Dijkstra;
+        self.algorithm = Algorithm::Astar;
         self.speed = Speed::Fast;
     }
 }
