@@ -9,8 +9,8 @@ const EMPTY_CLASSES: &str = "w-full h-full hover:bg-slate-700 duration-300";
 const WALL_CLASSES: &str = "w-full h-full animate-wall bg-slate-800 hover:bg-slate-500 duration-300";
 const START_CLASSES: &str = "w-full h-full bg-start";
 const END_CLASSES: &str = "w-full h-full bg-end";
-const VISITED_CLASSES: &str = "w-full h-full animate-visited bg-blue-500";
-const SHORTEST_PATH_CLASSES: &str = "w-full h-full animate-shortestpath bg-yellow-300";
+const VISITED_CLASSES: &str = "w-full h-full animate-visited bg-visited";
+const SHORTEST_PATH_CLASSES: &str = "w-full h-full animate-shortestpath bg-shortestpath";
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
@@ -73,7 +73,7 @@ pub fn cell_component(props: &Props) -> Html {
 
     
     html! {
-        <td {onmouseenter} {onmousedown}  class="select-none border border-gray-300 w-7 h-7">
+        <td {onmouseenter} {onmousedown}  class="select-none border-2 border-gray-700 w-7 h-7">
             <div class={classes!(cell_classes.clone())}></div>
         </td>
     }

@@ -74,7 +74,7 @@ pub fn PathfindingVisualizer() -> Html {
             //<p class="z-1 absolute bg-nav rounded-lg text-white text-2xl font-body p-1 ml-1 mt-52">{"Allow Drawing: "}{board_store.allow_drawing}</p> 
             <PathfindingNav board_dispatch={board_dispatch.clone()} />            
             <div class="grow min-h-0" ref={board_node}>
-                <table class="border-collapse border border-slate-500 mx-auto">
+                <table class="border-collapse border border-gray-700 mx-auto">
                     <thead>
                     </thead>
                     <tbody>

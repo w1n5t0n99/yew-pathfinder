@@ -19,6 +19,8 @@ module.exports = {
         'nav': '#013842',
         'start': '#088423',
         'end': '#AF1B0B',
+        'visited': '#00beda',
+        'shortestpath': '#fffe6a'
       },
       keyframes: {
         wall: {
